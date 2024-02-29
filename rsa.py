@@ -20,7 +20,7 @@ def gcd(a, b):
         a, b = b, a % b
     return a
 
-def multiplicative_inverse(e, phi):
+def multiplicative_inverse(e, z):
     def egcd(a, b):
         if a == 0:
             return (b, 0, 1)
@@ -28,9 +28,9 @@ def multiplicative_inverse(e, phi):
             g, y, x = egcd(b % a, a)
             return (g, x - (b // a) * y, y)
 
-    g, x, _ = egcd(e, phi)
+    g, x, _ = egcd(e, z)
     if g == 1:
-        return x % phi
+        return x % z
 
 def generate_keypair(p, q):
     if not (is_prime(p) and is_prime(q)):
@@ -40,16 +40,16 @@ def generate_keypair(p, q):
 
     n = p * q
 
-    phi = (p - 1) * (q - 1)
+    z = (p - 1) * (q - 1)
 
-    e = random.randrange(1, phi)
+    e = random.randrange(1, z)
 
-    g = gcd(e, phi)
+    g = gcd(e, z)
     while g != 1:
-        e = random.randrange(1, phi)
-        g = gcd(e, phi)
+        e = random.randrange(1, z)
+        g = gcd(e, z)
 
-    d = multiplicative_inverse(e, phi)
+    d = multiplicative_inverse(e, z)
 
     return ((e, n), (d, n))
 
